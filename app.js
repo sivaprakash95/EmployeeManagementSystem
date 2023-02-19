@@ -1,5 +1,9 @@
 const express = require("express");
-const morgan = require("morgan")
+const morgan = require("morgan");
+const cookieParser = require("cookie-parser");
+const sessions = require('express-session');
+const crypto = require('crypto');
+
 const app = express();
 
 // DECLARE ROUTES
@@ -9,6 +13,21 @@ const loginRoute = require("./server/routes/loginRoute")
 // PARSE INCOMMING REQUEST WITH JSON PAYLOADS
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
+
+// CREATING 24 HOURS FROM MILLISECONDS
+const oneDay = 1000 * 60 * 60 * 24;
+const secrectkey = new Date().getUTCMilliseconds()+"@UUID-"+crypto.randomUUID()
+
+//SESSION
+app.use(sessions({
+    secret: secrectkey,
+    saveUninitialized:true,
+    cookie: { maxAge: oneDay },
+    resave: false 
+}));
+
+// COOKIE PARSER
+app.use(cookieParser());
 
 // SERVING TEMPLATE
 app.set("view engine","ejs");

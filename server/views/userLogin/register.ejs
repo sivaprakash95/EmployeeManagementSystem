@@ -1,0 +1,294 @@
+<%- include('../includes/layout.ejs') %>
+
+<block content>
+    <div class="register-page">
+        <div class="register-box">
+            <div class="card card-outline card-primary">
+              <div class="card-header text-center">
+                <a href="" class="h5"><b>Employee Management System</b></a>
+              </div>
+              <div class="card-body">
+                <p class="login-box-msg">Register a new membership</p>
+          
+                <form id="form-register">
+                  <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Full name" id="fullName" name="fullName">
+                    <div class="input-group-append">
+                      <div class="input-group-text">
+                        <span class="fas fa-user"></span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="help-error mb-3" id="fullNameHelpErr"></div>
+
+                  <div class="input-group">
+                    <input type="email" class="form-control" placeholder="Email" id="email" name="email">
+                    <div class="input-group-append">
+                      <div class="input-group-text">
+                        <span class="fas fa-envelope"></span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="help-error mb-3" id="emailHelpErr"></div>
+
+                  <div class="input-group">
+                    <input type="password" class="form-control" placeholder="Password" id="password" name="password">
+                    <div class="input-group-append">
+                      <div class="input-group-text">
+                        <span class="fas fa-lock"></span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="help-error" id="passwordHelpErr"></div>
+                  <div class="help-warning mb-3" id="passwordRegxHelpErr">Ensure that password is 8 to 64 characters long and contains a mix of upper and lower case characters, one numeric and one special character</div>
+
+                  <div class="input-group">
+                    <input type="password" class="form-control" placeholder="Retype password" id="repassword" name="repassword">
+                    <div class="input-group-append">
+                      <div class="input-group-text">
+                        <span class="fas fa-lock"></span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="help-error mb-3" id="repasswordHelpErr"></div>
+
+                  <div class="row">
+                    <!-- <div class="col-8">
+                      <div class="icheck-primary">
+                        <input type="checkbox" id="agreeTerms" name="terms" value="agree">
+                        <label for="agreeTerms">
+                         I agree to the <a href="#">terms</a>
+                        </label>
+                      </div>
+                    </div> -->
+                    <!-- /.col -->
+                    <div class="col-12">
+                      <button id="form-register-btn" type="button" class="btn btn-primary btn-block">Register</button>
+                    </div>
+                    <!-- /.col -->
+                  </div>
+                </form>
+          
+                <a href="/ems/login" class="text-center">I already have a membership</a>
+              </div>
+              <!-- /.form-box -->
+            </div><!-- /.card -->
+          </div>
+          <!-- /.register-box -->
+    </div>
+</block>
+
+<block script>
+    <script>
+      $("#form-register-btn").click((e)=>{
+        if(validateRegisterForm()){
+          RegisterFormSubmit();
+        }
+        else{
+          e.preventDefault();
+        }
+      })
+
+      $("#fullName").on("input",(e)=>{
+        validateRegisterForm("fullName")
+      })
+
+      $("#email").on("input",(e)=>{
+        validateRegisterForm("email")
+      })
+
+      $("#password").on("input",(e)=>{
+        validateRegisterForm("password")
+      })
+
+      $("#repassword").on("input",(e)=>{
+        validateRegisterForm("repassword")
+      })
+    
+      function RegisterFormSubmit(){
+          let data = objectifyForm($("form#form-register").serializeArray());
+
+          $.ajax({
+              url : '/ems/register',
+              data: data,
+              dataType:"JSON",
+              cache: false,
+              type: 'POST',
+              success : function(data) {
+                  if(data.success){
+                    window.location.replace("/ems/login")
+                  }
+              },
+              error : function(request,error)
+              {
+                  // alert("Request: "+JSON.stringify(request));
+                  console.log({request,error})
+              }
+          });
+      }
+
+      function validateRegisterForm(elementId){
+        let email = $("#email").val().trim();
+        let password = $("#password").val().trim();
+        let fullName = $("#fullName").val().trim();
+        let repassword = $("#repassword").val().trim();
+        let isPasswordMatched = (password == repassword);
+        let isValid = true
+
+        let emailRegx = new RegExp(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g)
+        let passwordRegx = new RegExp(/((?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\W]).{8,64})/g)
+        
+        if(elementId){
+          switch(elementId){
+            case "email":
+              if(!email){
+                isValid =false
+                $("#emailHelpErr").html("Enter Your Email")
+              }
+              else{
+                if(!email.match(emailRegx)){
+                  isValid =false
+                  $("#emailHelpErr").html("Invalid Email!")
+                }
+                else{
+                  $("#emailHelpErr").html("")
+                }
+              }
+            break;
+
+            case "password":
+              if(!password){
+                isValid =false
+                $("#passwordHelpErr").html("Enter Your Password")
+              }
+              else{
+                $("#passwordHelpErr").html("")
+              }
+              if(password){
+                if(!password.match(passwordRegx)){
+                  isValid =false
+                  $("#passwordHelpErr").html("Invalid Password!")
+                }
+                else{
+                  if(repassword && !isPasswordMatched){
+                    isValid =false
+                    $("#passwordHelpErr").html("Retype Password Mismatched!")
+                  }
+                  else{
+                    $("#passwordHelpErr").html("")
+                    $("#repasswordHelpErr").html("")
+                  }
+                }
+              }
+            break;
+
+            case "fullName":
+              if(!fullName){
+                isValid =false
+                $("#fullNameHelpErr").html("Enter Your Full Name")
+              }
+              else{
+                $("#fullNameHelpErr").html("")
+              }
+            break;
+
+            case "repassword":
+              if(!repassword){
+                isValid =false
+                $("#repasswordHelpErr").html("Re-enter Your Password")
+              }
+              else{
+                  $("#repasswordHelpErr").html("")
+              }
+              if(repassword){
+                if(!repassword.match(passwordRegx)){
+                  isValid =false
+                  $("#repasswordHelpErr").html("Invalid Password!")
+                }
+                else{
+                  if(password && !isPasswordMatched){
+                    isValid =false
+                    $("#repasswordHelpErr").html("Password Mismatched!")
+                  }
+                  else{
+                    $("#repasswordHelpErr").html("")
+                    $("#passwordHelpErr").html("")
+                  }
+                }
+              }
+            break;
+          }
+        }
+        else{
+          if(!fullName){
+            isValid =false
+            $("#fullNameHelpErr").html("Enter Your Full Name")
+          }
+          else{
+            $("#fullNameHelpErr").html("")
+          }
+
+          if(!email){
+            isValid =false
+            $("#emailHelpErr").html("Enter Your Email")
+          }
+          else{
+            if(!email.match(emailRegx)){
+              isValid =false
+              $("#emailHelpErr").html("Invalid Email!")
+            }
+            else{
+              $("#emailHelpErr").html("")
+            }
+          }
+
+          if(!password){
+            isValid =false
+            $("#passwordHelpErr").html("Enter Your Password")
+          }
+          else{
+            $("#passwordHelpErr").html("")
+          }
+
+          if(!repassword){
+            isValid =false
+            $("#repasswordHelpErr").html("Re-enter Your Password")
+          }
+          else{
+              $("#repasswordHelpErr").html("")
+          }
+
+          if(password && repassword){
+            if(!password.match(passwordRegx)){
+              isValid =false
+              $("#passwordHelpErr").html("Invalid Password!")
+              // $("#passwordRegxHelpErr").html("Ensure that password is 8 to 64 characters long and contains a mix of upper and lower case characters, one numeric and one special character")
+            }
+            else{
+              if(!isPasswordMatched){
+                isValid =false
+                $("#repasswordHelpErr").html("Password Mismatched!")
+                $("#passwordHelpErr").html("Password Mismatched!")
+              }
+              else{
+                $("#repasswordHelpErr").html("")
+                $("#passwordHelpErr").html("")
+              } 
+            }
+          }
+        }
+        
+        return isValid;
+      }
+    
+      function objectifyForm(formArray) {
+          //serialize data function
+          var returnArray = {};
+          for (var i = 0; i < formArray.length; i++){
+              returnArray[formArray[i]['name']] = formArray[i]['value'];
+          }
+          return returnArray;
+      }
+
+    </script>
+</block>
