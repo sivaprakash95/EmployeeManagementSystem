@@ -16,7 +16,7 @@
               <input type="email" class="form-control" placeholder="Email" name="email" id="email">
               <div class="input-group-append">
                 <div class="input-group-text">
-                  <span class="fas fa-envelope"></span>
+                  <span class="fas fa-envelope" title="Email"></span>
                 </div>
               </div>
             </div>
@@ -26,7 +26,7 @@
               <input type="password" class="form-control" placeholder="Password" name="password" id="password">
               <div class="input-group-append">
                 <div class="input-group-text">
-                  <span class="fas fa-lock"></span>
+                  <span class="fas fa-lock" id="passwordLock" title="show password"></span>
                 </div>
               </div>
             </div>
@@ -66,7 +66,20 @@
 
 <block script>
   <script>
-
+    $("#passwordLock").click((e)=>{
+      if($("#passwordLock").hasClass("fa-lock")){
+        $("#passwordLock").addClass("fa-unlock")
+        $("#passwordLock").removeClass("fa-lock")
+        $("#passwordLock").attr("title","hide password")
+        $("#password").attr("type","text")
+      }
+      else{
+        $("#passwordLock").addClass("fa-lock")
+        $("#passwordLock").removeClass("fa-unlock")
+        $("#passwordLock").attr("title","show password")
+        $("#password").attr("type","password")
+      }
+    })
     $("#form-login-btn").click((e)=>{
       if(validateLoginForm()){
         loginFormSubmit();
@@ -94,8 +107,6 @@
             cache: false,
             type: 'POST',
             success : function(data) {
-                $("#returnMessage").attr("class","help-success");
-                $("#returnMessage").html(data.message)
                 if(data.success){
                   window.location.replace("/ems/dashboard")
                 }
@@ -103,8 +114,15 @@
             error : function(request,error)
             {
                 let responseData = request.responseJSON;
-                $("#returnMessage").attr("class","help-error");
-                $("#returnMessage").html(responseData.message)
+                if(responseData.element)
+                switch(responseData.element){
+                  case "email":
+                    $("#emailHelpErr").html(responseData.message)
+                    break;
+                  case "password":
+                    $("#passwordHelpErr").html(responseData.message)
+                    break;
+                }
                 console.log({request,error})
             }
         });
@@ -194,7 +212,7 @@
       }
       return returnArray;
     }
-  
+    
   </script>
 </block>
 

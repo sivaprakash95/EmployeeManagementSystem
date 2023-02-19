@@ -32,7 +32,7 @@ exports.postLogin = (req,res)=>{
             res.status(200).json({success:true,message:data.message})
         }
         else{
-            res.status(401).json({success:false,message:`Authentication Falied: ${data.message}` })
+            res.status(401).json({success:false,message:data.message,element:data.element })
         }
     })
     .catch((err)=>{
@@ -144,11 +144,11 @@ let user_apis = {
                         resolve({success:true,message:"Login Successfully!",data:userData});
                     }
                     else{
-                        resolve({success:false,message:"Wrong Password!"});
+                        resolve({success:false,message:"Wrong Password!",element:"password"});
                     }
                 }
                 else{
-                    resolve({success:false,message:"User Not Found!"});
+                    resolve({success:false,message:"Email Not Found!",element:"email"});
                 }
             })
             .catch((err)=>{
