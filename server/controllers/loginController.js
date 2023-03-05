@@ -2,9 +2,6 @@ var mongoose = require('mongoose')
 require('../model/users');
 const userModel = mongoose.model('User')
 const crypto = require('crypto');
-const express = require("express");
-
-const app = express();
 
 exports.getLogin = (req,res)=>{
     if(!req.session.user_data){
@@ -17,7 +14,6 @@ exports.getLogin = (req,res)=>{
 }
 
 exports.checkLoginBody = (req,res,next)=>{
-    console.log(req.body)
     if(!req.body.email || !req.body.password){
         return res.status(404).json({message:"email or password missing!"})
     }
@@ -65,13 +61,7 @@ exports.postRegister = (req,res)=>{
 }
 
 exports.getDashboard = (req,res)=>{
-    if(req.session.user_data){
-        res.render("dashboard.ejs",{email:req.session.user_data.email})
-    }
-    else{
-        res.redirect("/ems/login");
-    }
-    
+    res.render("dashboard.ejs",{email:req.session.user_data.email, req:req})
 }
 
 exports.getLogout = (req,res)=>{

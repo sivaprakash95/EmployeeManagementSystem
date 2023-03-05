@@ -1,14 +1,15 @@
 const express = require("express");
-const loginController = require("../controllers/loginController");
-
 const router = express.Router();
+
+const loginController = require("../controllers/loginController");
+const middlewareController = require("../controllers/middleController")
 
 router.route("/login")
 .get(loginController.getLogin)
 .post(loginController.checkLoginBody, loginController.postLogin)
 
 router.route("/dashboard")
-.get(loginController.getDashboard)
+.get(middlewareController.checkSession, loginController.getDashboard)
 
 router.route("/logout")
 .get(loginController.getLogout)

@@ -1,4 +1,10 @@
-  <!-- Preloader -->
+
+
+<%
+    let email = req.session.user_data.email;
+    let userName= req.session.user_data.full_name;
+%>
+<!-- Preloader -->
   <div class="preloader flex-column justify-content-center align-items-center">
     <strong class="animation__shake" alt="Logo" height="60" width="60"></strong>
     <img class="animation__shake" src="/dist/img/ems.webp" alt="Logo" height="500" width="500">
@@ -45,9 +51,9 @@
 
       <!-- Messages Dropdown Menu -->
       <li class="nav-item dropdown">
-        <a class="nav-link" data-toggle="dropdown" href="/ems/logout">
-          <i class="fa fa-download" style="transform: rotateZ(90deg);"></i>
-          <span class="badge badge-danger navbar-badge" style="top: 2px;right: -7px;">logout</span>
+        <a class="nav-link" data-toggle="dropdown" href="#">
+          <i class="fa fa-comments"></i>
+          <span class="badge badge-danger navbar-badge">3</span>
         </a>
         <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
           <a href="#" class="dropdown-item">
@@ -101,6 +107,7 @@
           <a href="#" class="dropdown-item dropdown-footer">See All Messages</a>
         </div>
       </li>
+
       <!-- Notifications Dropdown Menu -->
       <li class="nav-item dropdown">
         <a class="nav-link" data-toggle="dropdown" href="#">
@@ -128,6 +135,76 @@
           <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
         </div>
       </li>
+
+      <!-- Profile  Dropdown Menu -->
+      <li class="nav-item dropdown">
+        <a class="nav-link" data-toggle="dropdown" href="#" style="padding: 0px;">
+          <img src="/dist/img/user2-160x160.jpg" alt="User Avatar" class="img-circle" style="width: 27px;margin-left: 10px;">
+        </a>
+        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+          <div class="dropdown-item">
+            <!-- Message Start -->
+            <div class="media">
+              <img src="/dist/img/user2-160x160.jpg" alt="User Avatar" class="img-size-50 mr-3 img-circle">
+              <div class="media-body">
+                <h3 class="dropdown-item-title">
+                  <%=userName.toUpperCase()%>
+                  <span class="float-right text-sm text-secondary"><i class="fas fa-user"></i></span>
+                </h3>
+                <p class="text-sm">Administrator</p>
+                <p class="text-sm text-muted">
+                  <div title="<%=email%>" style="overflow-wrap: break-word;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;width: 170px;">
+                    <i class="far fa-envelope mr-1"></i> 
+                    <%=email%>
+                  </div>
+                </p>
+              </div>
+            </div>
+            <!-- Message End -->
+          </div>
+          <a href="#" class="dropdown-item">
+            <!-- Profile Start -->
+            <div class="media">
+              
+              <div class="media-body">
+                <h3 class="dropdown-item-title">
+                  <span class="text-sm text-primary"><i class="fas fa-star"></i> &nbsp;</span>
+                  My Profile
+                </h3>
+              </div>
+            </div>
+            <!-- Profile End -->
+          </a>
+          <div class="dropdown-divider"></div>
+          <a href="#" class="dropdown-item">
+            <!-- Settings Start -->
+            <div class="media">
+              <div class="media-body">
+                <h3 class="dropdown-item-title">
+                  <span class="text-sm text-warning"><i class="fas fa-cog"></i> &nbsp;</span>
+                  Settings
+                </h3>
+              </div>
+            </div>
+            <!-- Settings End -->
+          </a>
+          <div class="dropdown-divider"></div>
+          <a href="/ems/logout" class="dropdown-item">
+            <!-- Logout Start -->
+            <div class="media">
+              <div class="media-body">
+                <h3 class="dropdown-item-title">
+                  <span class="text-sm text-secondary"><i class="fa fa-download" style="transform: rotateZ(90deg);"></i> &nbsp;</span>
+                  Logout
+                </h3>
+              </div>
+            </div>
+            <!-- Logout End -->
+          </a>
+          
+        </div>
+      </li>
+
       <li class="nav-item">
         <a class="nav-link" data-widget="fullscreen" href="#" role="button">
           <i class="fas fa-expand-arrows-alt"></i>
@@ -157,7 +234,7 @@
           <img src="/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="#" class="d-block" style="    overflow-wrap: break-word;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;width: 170px;"><%=email ? email : "" %></a>
+          <a href="#" class="d-block" style="    overflow-wrap: break-word;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;width: 170px;"><%=email%></a>
         </div>
       </div>
 
@@ -188,39 +265,45 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="#" class="nav-link active">
-                  <i class="far fa-circle margin-10"></i>
+                <a href="/ems/dashboard" class="nav-link active">
+                  <i class="fa fa-chart-bar"></i>
                   <p>Dashboard</p>
                 </a>
               </li>
               <li class="nav-item">
                 <a href="#" class="nav-link">
-                  <i class="far fa-circle margin-10"></i>
+                  <i class="fa fa-yin-yang"></i>
                   <p>Leaves</p>
                 </a>
               </li>
               <li class="nav-item">
                 <a href="#" class="nav-link">
-                  <i class="far fa-circle margin-10"></i>
+                  <i class="fa fa-concierge-bell"></i>
                   <p>Attendance</p>
                 </a>
               </li>
               <li class="nav-item">
                 <a href="#" class="nav-link">
-                  <i class="far fa-circle margin-10"></i>
+                  <i class="fa fa-user-clock"></i>
                   <p>Timesheet</p>
                 </a>
               </li>
               <li class="nav-item">
                 <a href="#" class="nav-link">
-                  <i class="far fa-circle margin-10"></i>
+                  <i class="fa fa-tree"></i>
                   <p>Holidays</p>
                 </a>
               </li>
               <li class="nav-item">
                 <a href="#" class="nav-link">
-                  <i class="far fa-circle margin-10"></i>
+                  <i class="fa fa-users"></i>
                   <p>Clients</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="#" class="nav-link">
+                  <i class="fa fa-user-friends"></i>
+                  <p>Employees</p>
                 </a>
               </li>
               <li class="nav-item">
@@ -228,19 +311,19 @@
                   <i class="nav-icon fas fa-book"></i>
                   <p>
                     Projects
-                    <i class="right fas fa-angle-left margin-20" style="margin-left:20px"></i>
+                    <i class="right fas fa-angle-left" style="margin-left:20px"></i>
                   </p>
                 </a>
                 <ul class="nav nav-treeview">
                   <li class="nav-item">
                     <a href="#" class="nav-link">
-                      <i class="far fa-circle margin-20"></i>
-                      <p>Projects</p>
+                      <i class="fa fa-project-diagram"></i>
+                      <p>Project List</p>
                     </a>
                   </li>
                   <li class="nav-item">
                     <a href="#" class="nav-link">
-                      <i class="far fa-circle margin-20"></i>
+                      <i class="fa fa-tasks"></i>
                       <p>Tasks</p>
                     </a>
                   </li>
@@ -248,7 +331,7 @@
               </li>
               <li class="nav-item">
                 <a href="#" class="nav-link">
-                  <i class="far fa-circle margin-10"></i>
+                  <i class="fa fa-check-double"></i>
                   <p>Tickets</p>
                 </a>
               </li>
@@ -257,7 +340,7 @@
 
           <li class="nav-item">
             <a href="#" class="head-menu nav-link">
-              <i class="nav-icon fas fa-tachometer-alt"></i>
+              <i class="nav-icon fa fa-user-shield"></i>
               <p>
                 ADMIN
                 <i class="right fas fa-angle-left"></i>
@@ -266,58 +349,58 @@
             <ul class="nav nav-treeview">
               <li class="nav-item">
                 <a href="#" class="nav-link">
-                  <i class="far fa-circle margin-10"></i>
+                  <i class="fa fa-chart-area"></i>
                   <p>Dashboard</p>
                 </a>
               </li>
               <li class="nav-item">
                 <a href="#" class="head-menu nav-link">
-                  <i class="nav-icon fas fa-chart-pie"></i>
+                  <i class="nav-icon fa fa-truck-loading"></i>
                   <p>
                     Leads
-                    <i class="right fas fa-angle-left margin-20" style="margin-left:20px"></i>
+                    <i class="right fas fa-angle-left" style="margin-left:20px"></i>
                   </p>
                 </a>
                 <ul class="nav nav-treeview">
                   <li class="nav-item">
                     <a href="#" class="nav-link">
-                      <i class="far fa-circle margin-20"></i>
+                      <i class="fa fa-home"></i>
                       <p>Leaves</p>
                     </a>
                   </li>
                   <li class="nav-item">
-                    <a href="#" class="nav-link">
-                      <i class="far fa-circle margin-20"></i>
+                    <a href="/ems/employees" class="nav-link">
+                      <i class="fa fa-user-graduate"></i>
                       <p>Employees</p>
                     </a>
                   </li>
                   <li class="nav-item">
                     <a href="#" class="nav-link">
-                      <i class="far fa-circle margin-20"></i>
+                      <i class="fa fa-concierge-bell"></i>
                       <p>Attendance</p>
                     </a>
                   </li>
                   <li class="nav-item">
                     <a href="#" class="nav-link">
-                      <i class="fas fa-table margin-20"></i>
+                      <i class="fa fa-clock"></i>
                       <p>Timesheet</p>
                     </a>
                   </li>
                   <li class="nav-item">
                     <a href="#" class="nav-link">
-                      <i class="far fa-circle margin-20"></i>
+                      <i class="fa fa-water"></i>
                       <p>Overtime</p>
                     </a>
                   </li>
                   <li class="nav-item">
                     <a href="#" class="nav-link">
-                      <i class="far fa-circle margin-20"></i>
+                      <i class="fa fa-hand-holding-water"></i>
                       <p>Projects</p>
                     </a>
                   </li>
                   <li class="nav-item">
                     <a href="#" class="nav-link">
-                      <i class="far fa-circle margin-20"></i>
+                      <i class="fa fa-box"></i>
                       <p>Tickets</p>
                     </a>
                   </li>
@@ -326,38 +409,38 @@
 
               <li class="nav-item">
                 <a href="#" class="head-menu nav-link">
-                  <i class="nav-icon fas  fas fa-th"></i>
+                  <i class="nav-icon fas fa-cog"></i>
                   <p>
                     Settings
-                    <i class="right fas fa-angle-left margin-20" style="margin-left:20px"></i>
+                    <i class="right fas fa-angle-left" style="margin-left:20px"></i>
                   </p>
                 </a>
 
                 <ul class="nav nav-treeview">
                   <li class="nav-item">
                     <a href="#" class="head-menu nav-link">
-                      <i class="nav-icon fas fa-tree margin-20" style="margin-left: 30px;"></i>
+                      <i class="nav-icon fa fa-asterisk"></i>
                       <p>
                         Masters
-                        <i class="right fas fa-angle-left margin-20"></i>
+                        <i class="right fas fa-angle-left"></i>
                       </p>
                     </a>
                     <ul class="nav nav-treeview">
                       <li class="nav-item">
                         <a href="#" class="nav-link">
-                          <i class="far fa-circle margin-30"></i>
+                          <i class="fa fa-building"></i>
                           <p>Department</p>
                         </a>
                       </li>
                       <li class="nav-item">
                         <a href="#" class="nav-link">
-                          <i class="far fa-circle margin-30"></i>
+                          <i class="fa fa-user-tag"></i>
                           <p>Desigination</p>
                         </a>
                       </li>
                       <li class="nav-item">
                         <a href="#" class="nav-link">
-                          <i class="far fa-circle margin-30"></i>
+                          <i class="fa fa-globe"></i>
                           <p>Country Master</p>
                         </a>
                       </li>
@@ -366,13 +449,13 @@
                   
                   <li class="nav-item">
                     <a href="#" class="nav-link">
-                      <i class="far fa-circle margin-20"></i>
+                      <i class="fa fa-blind"></i>
                       <p>Role & Permission</p>
                     </a>
                   </li>
                   <li class="nav-item">
                     <a href="#" class="nav-link">
-                      <i class="far fa-circle margin-20"></i>
+                      <i class="fa fa-wind"></i>
                       <p>Leave Types</p>
                     </a>
                   </li>

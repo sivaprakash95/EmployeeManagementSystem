@@ -7,8 +7,6 @@ var UserSchema = new mongoose.Schema({
         type:String,
         require:[true,"username cann't be blank"],
         trim:true,
-        index:true
-        
     },
     email:{
         type:String,
@@ -26,6 +24,13 @@ var UserSchema = new mongoose.Schema({
     isActive:{
         type:Boolean,
         default:false
+    },
+    userType:{
+        type:String,
+        default:["employee","admin","client","anonymous"],
+        trim:true,
+        lowercase: true,
+        index:true
     }
 },{timestamps:true})
 

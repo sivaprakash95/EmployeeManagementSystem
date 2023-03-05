@@ -32,6 +32,8 @@ app.use(cookieParser());
 // SERVING TEMPLATE
 app.set("view engine","ejs");
 app.set('views', './server/views');
+
+// DEFINE STATIC FOLDER
 app.use(express.static(`${__dirname}/public`))
 
 if(process.env.NODE_APP.toString().toLowerCase() == "development"){
